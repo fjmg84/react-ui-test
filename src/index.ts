@@ -1,8 +1,8 @@
 // UI Testing Library re-exports  
 // Provides convenient access to @testing-library APIs with additional globals
 
-// Render and screen from @testing-library/react
-export { render, screen, cleanup } from '@testing-library/react'
+// Render and screen from @testing-library/react (fireEvent here is act-wrapped)
+export { render, screen, cleanup, fireEvent } from '@testing-library/react'
 
 // Queries from @testing-library/dom
 export { 
@@ -10,8 +10,7 @@ export {
   getByLabelText, 
   getByPlaceholderText, 
   getByRole, 
-  getByTestId,
-  fireEvent 
+  getByTestId 
 } from '@testing-library/dom'
 
 // Async queries
@@ -35,6 +34,25 @@ export {
 // Types
 export type { RenderResult } from '@testing-library/react'
 
-// Vitest globals (describe/it/test/hooks/vi). expect es el custom de la lib (label-based).
-export { describe, it, test, beforeEach, afterEach, vi } from './vitest-integration'
+// describe(Component, (ctx) => ...) auto-renders; describe('string', fn) delegates to vitest
+export { describe } from './core/describe'
+export { it, test, beforeEach, afterEach, vi } from './vitest-integration'
+// own label-based expect, with auto-retry
 export { expect } from './core/expectations'
+// Actions over screen + fireEvent (wrapped in act)
+export {
+  fill,
+  click,
+  type,
+  clear,
+  select,
+  selectOptions,
+  check,
+  uncheck,
+  press,
+  hover,
+  unhover,
+  doubleClick,
+  rightClick,
+  upload,
+} from './core/actions'
