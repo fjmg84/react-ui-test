@@ -1,11 +1,14 @@
 {
-  "name": "f-react-ui-test",
+  "name": "@fjmg84/uitest",
   "version": "0.1.0",
   "description": "Zero-config React UI testing library with provider inference and accessibility-first queries",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -16,9 +19,12 @@
       "types": "./dist/vitest-integration.d.ts"
     },
     "./vitest-entry": {
-      "import": "./src/vitest-entry.ts",
-      "types": "./src/vitest-entry.ts"
+      "import": "./dist/vitest-entry.js",
+      "types": "./dist/vitest-entry.d.ts"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "tsc",

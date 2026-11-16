@@ -44,7 +44,8 @@ export async function flushPendingAssertions(): Promise<void> {
   if (failed) throw (failed as PromiseRejectedResult).reason
 }
 
-function getElementByLabel(label: string): HTMLElement {
+/** Resolves an element the way a user finds it: label, placeholder, role name, then test id. */
+export function getElementByLabel(label: string): HTMLElement {
   const strategies = [
     () => screen.getByLabelText(label),
     () => screen.getByPlaceholderText(label),

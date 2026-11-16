@@ -16,7 +16,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "paths": {
-      "f-react-ui-test": ["./src/index.ts"]
+      "@fjmg84/uitest": ["./src/index.ts"]
     }
   },
   "include": ["src/**/*"],

@@ -4,7 +4,7 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   resolve: {
     alias: {
-      'f-react-ui-test': path.resolve(__dirname, './src/index.ts'),
+      '@fjmg84/uitest': path.resolve(__dirname, './src/index.ts'),
     },
   },
   test: {

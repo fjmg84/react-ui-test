@@ -1,14 +1,17 @@
 // UI Testing Vitest Entry Point  
-// Configures vitest globals for react-ui-test
+// Configures vitest globals for @fjmg84/uitest
+
+import { describe, it, test, beforeEach, afterEach, expect, vi } from 'vitest'
 
 // Re-export vitest globals for use in test files
-export { describe, it, test, beforeEach, afterEach, expect, vi } from 'vitest'
+export { describe, it, test, beforeEach, afterEach, expect, vi }
 
 // Configure vitest globals when this file is imported
-globalThis.describe = describe
-globalThis.it = it
-globalThis.test = test
-globalThis.beforeEach = beforeEach
-globalThis.afterEach = afterEach
-;(globalThis as any).expect = expect
-globalThis.vi = vi
+const g = globalThis as any
+g.describe = describe
+g.it = it
+g.test = test
+g.beforeEach = beforeEach
+g.afterEach = afterEach
+g.expect = expect
+g.vi = vi

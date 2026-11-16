@@ -1,6 +1,6 @@
-# Corrections for f-react-ui-test
+# Corrections for @fjmg84/uitest
 
-Current state: the library passes its own tests (4/4) but is not installable as a dependency by a consumer, and several of its public APIs are dead code or promise functions that do not exist.
+Current state: the library passes its own tests (7/7) but is not installable as a dependency by a consumer, and several of its public APIs are dead code or promise functions that do not exist.
 
 The items are resolved in order. Each includes current state, problem, change, and expected result.
 
@@ -11,7 +11,7 @@ The items are resolved in order. Each includes current state, problem, change, a
 ### Problem
 `dependencies` only has `aria-query`. `@testing-library/react`, `@testing-library/dom` and `vitest` are in `devDependencies`, and `vitest` is not declared in `peerDependencies` even though `src/vitest-integration.ts` imports from `vitest`.
 
-A consumer doing `import { render, expect } from 'f-react-ui-test'` gets:
+A consumer doing `import { render, expect } from '@fjmg84/uitest'` gets:
 
 ```
 Cannot find module '@testing-library/react' or its corresponding type declarations
@@ -33,7 +33,7 @@ Move to `peerDependencies`:
 Remove `@testing-library/react`, `@testing-library/dom` and `vitest` from `devDependencies` (keep them only if needed for internal development/testing).
 
 ### Expected result
-`npm install f-react-ui-test` does not force RTL or vitest as regular dependencies; the consumer provides them.
+`npm install @fjmg84/uitest` does not force RTL or vitest as regular dependencies; the consumer provides them.
 
 ---
 
@@ -104,7 +104,7 @@ If it will not be connected, delete `src/core/provider-inference.ts`, `configure
 ## 3. Mocking: export and fix the mockFetchOnce queue
 
 ### Problem A: not exported
-`src/mocking/fetch-interceptor.ts` is not exported from `src/index.ts`. A consumer cannot do `import { mockFetch } from 'f-react-ui-test'`.
+`src/mocking/fetch-interceptor.ts` is not exported from `src/index.ts`. A consumer cannot do `import { mockFetch } from '@fjmg84/uitest'`.
 
 ### Change A
 Export in `src/index.ts`:

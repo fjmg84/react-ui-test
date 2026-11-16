@@ -4,20 +4,11 @@
 import { act } from 'react-dom/test-utils'
 import { fireEvent } from '@testing-library/react'
 import { screen } from './render'
-
-function labelElement(label: string): HTMLElement {
-  const el =
-    screen.getByLabelText(label) ??
-    screen.getByPlaceholderText(label) ??
-    screen.getByRole('textbox', { name: label }) ??
-    screen.getByRole('combobox', { name: label })
-  if (!el) throw new Error(`No element found for label: "${label}"`)
-  return el
-}
+import { getElementByLabel } from './expectations'
 
 export async function fill(label: string, value: string): Promise<void> {
   await act(async () => {
-    const el = labelElement(label)
+    const el = getElementByLabel(label)
     fireEvent.change(el as HTMLInputElement, { target: { value } })
   })
 }
@@ -38,7 +29,7 @@ export async function click(textOrRole: string): Promise<void> {
 
 export async function type(label: string, text: string): Promise<void> {
   await act(async () => {
-    const el = labelElement(label)
+    const el = getElementByLabel(label)
     let current = ''
     for (const ch of text) {
       current += ch
@@ -49,7 +40,7 @@ export async function type(label: string, text: string): Promise<void> {
 
 export async function clear(label: string): Promise<void> {
   await act(async () => {
-    const el = labelElement(label)
+    const el = getElementByLabel(label)
     fireEvent.change(el as HTMLInputElement, { target: { value: '' } })
   })
 }
@@ -62,63 +53,63 @@ export async function press(key: string): Promise<void> {
 
 export async function check(label: string): Promise<void> {
   await act(async () => {
-    const el = labelElement(label)
+    const el = getElementByLabel(label)
     fireEvent.click(el as HTMLInputElement)
   })
 }
 
 export async function uncheck(label: string): Promise<void> {
   await act(async () => {
-    const el = labelElement(label)
+    const el = getElementByLabel(label)
     fireEvent.click(el as HTMLInputElement)
   })
 }
 
 export async function select(label: string, value: string): Promise<void> {
   await act(async () => {
-    const el = labelElement(label)
+    const el = getElementByLabel(label)
     fireEvent.change(el as HTMLSelectElement, { target: { value } })
   })
 }
 
 export async function selectOptions(label: string, values: string[]): Promise<void> {
   await act(async () => {
-    const el = labelElement(label)
+    const el = getElementByLabel(label)
     fireEvent.change(el as HTMLSelectElement, { target: { values } })
   })
 }
 
 export async function hover(label: string): Promise<void> {
   await act(async () => {
-    const el = labelElement(label)
+    const el = getElementByLabel(label)
     fireEvent.mouseOver(el)
   })
 }
 
 export async function unhover(label: string): Promise<void> {
   await act(async () => {
-    const el = labelElement(label)
+    const el = getElementByLabel(label)
     fireEvent.mouseOut(el)
   })
 }
 
 export async function doubleClick(label: string): Promise<void> {
   await act(async () => {
-    const el = labelElement(label)
+    const el = getElementByLabel(label)
     fireEvent.dblClick(el)
   })
 }
 
 export async function rightClick(label: string): Promise<void> {
   await act(async () => {
-    const el = labelElement(label)
+    const el = getElementByLabel(label)
     fireEvent.contextMenu(el)
   })
 }
 
 export async function upload(label: string, files: File[]): Promise<void> {
   await act(async () => {
-    const el = labelElement(label)
+    const el = getElementByLabel(label)
     fireEvent.change(el as HTMLInputElement, { target: { files } })
   })
 }
