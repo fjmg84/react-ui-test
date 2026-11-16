@@ -2,7 +2,47 @@ import { waitFor, within } from '@testing-library/react'
 import { screen } from './render'
 import type { ExpectOptions, ElementExpectAPI } from '../types/testing'
 
-const DEFAULT_TIMEOUT = 5000
+// Must stay below vitest's default testTimeout (5000ms), otherwise the runner
+// timeout kills the test before the real assertion error is reported.
+const DEFAULT_TIMEOUT = 3000
+
+// Assertions in flight. An assertion that is never awaited must not pass the
+// test silently, so every async assertion is tracked here and reported by
+// flushPendingAssertions() (wired to an afterEach hook in src/index.ts).
+const pending = new Set<Promise<unknown>>()
+
+function track<T>(p: Promise<T>): Promise<T> {
+  pending.add(p)
+  // Keeps the rejection handled so an un-awaited assertion never surfaces as an
+  // unhandled rejection; the failure is reported by flushPendingAssertions().
+  p.then(
+    () => { pending.delete(p) },
+    () => { pending.delete(p) }
+  )
+  return p
+}
+
+function trackApi<T extends Record<string, any>>(api: T): T {
+  const wrapped: Record<string, any> = {}
+  for (const [key, value] of Object.entries(api)) {
+    wrapped[key] =
+      typeof value === 'function'
+        ? (...args: any[]) => {
+            const result = value(...args)
+            return result && typeof result.then === 'function' ? track(result) : result
+          }
+        : value
+  }
+  return wrapped as T
+}
+
+/** Waits for assertions that were started but never awaited and fails on the first one that did not hold. */
+export async function flushPendingAssertions(): Promise<void> {
+  if (pending.size === 0) return
+  const results = await Promise.allSettled([...pending])
+  const failed = results.find((r) => r.status === 'rejected')
+  if (failed) throw (failed as PromiseRejectedResult).reason
+}
 
 function getElementByLabel(label: string): HTMLElement {
   const strategies = [
@@ -32,7 +72,7 @@ async function waitForCondition(
 }
 
 function createElementAPI(label: string): ElementExpectAPI {
-  return {
+  return trackApi({
     async toSee(text: string | RegExp, options: ExpectOptions = {}) {
       const element = await waitForElement(label, options.timeout)
       await waitForCondition(() => {
@@ -140,14 +180,14 @@ function createElementAPI(label: string): ElementExpectAPI {
         }
       }, options.timeout)
     },
-  }
+  })
 }
 
 async function waitForElement(label: string, timeout: number = DEFAULT_TIMEOUT): Promise<HTMLElement> {
   return waitFor(() => getElementByLabel(label), { timeout })
 }
 
-export const expect = {
+const rawExpect = {
   async toSee(text: string | RegExp, options: ExpectOptions = {}) {
     await waitForCondition(() => {
       const element = screen.queryByText(text)
@@ -282,5 +322,7 @@ export const expect = {
 
   element: createElementAPI,
 }
+
+export const expect = trackApi(rawExpect)
 
 export type { ElementExpectAPI }

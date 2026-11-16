@@ -4,6 +4,9 @@
 // Render and screen from @testing-library/react (fireEvent here is act-wrapped)
 export { render, screen, cleanup, fireEvent } from '@testing-library/react'
 
+import { afterEach } from './vitest-integration'
+import { flushPendingAssertions } from './core/expectations'
+
 // Queries from @testing-library/dom
 export { 
   getByText, 
@@ -56,3 +59,13 @@ export {
   rightClick,
   upload,
 } from './core/actions'
+
+// An assertion that is started but never awaited must fail the test instead of
+// passing silently. Registered at import time, like RTL's auto-cleanup.
+try {
+  afterEach(async () => {
+    await flushPendingAssertions()
+  })
+} catch {
+  // Library imported outside a test file: vitest refuses to register hooks.
+}

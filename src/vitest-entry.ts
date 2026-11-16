@@ -10,5 +10,5 @@ globalThis.it = it
 globalThis.test = test
 globalThis.beforeEach = beforeEach
 globalThis.afterEach = afterEach
-globalThis.expect = expect
+;(globalThis as any).expect = expect
 globalThis.vi = vi
