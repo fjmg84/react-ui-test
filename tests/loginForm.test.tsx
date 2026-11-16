@@ -2,8 +2,8 @@
 // El componente se monta antes de cada test y se desmonta después.
 // Los tests usan acciones (ctx.fill / ctx.click) en vez de fireEvent + screen.
 
-import { describe, expect } from "../../dist/index";
-import { LoginForm } from "./LoginForm";
+import { describe, expect } from "../dist/index";
+import { LoginForm } from "./fixtures/LoginForm";
 
 describe(LoginForm, (ctx) => {
   it("permite llenar credenciales y hacer click en login", async () => {
