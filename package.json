@@ -1,0 +1,52 @@
+{
+  "name": "f-react-ui-test",
+  "version": "0.1.0",
+  "description": "Zero-config React UI testing library with provider inference and accessibility-first queries",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./vitest": {
+      "import": "./dist/vitest-integration.js",
+      "types": "./dist/vitest-integration.d.ts"
+    },
+    "./vitest-entry": {
+      "import": "./src/vitest-entry.ts",
+      "types": "./src/vitest-entry.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "@testing-library/react": ">=16.0.0",
+    "@testing-library/dom": ">=10.0.0",
+    "vitest": ">=2.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@types/react-router-dom": "^5.0.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "@vitest/coverage-v8": "^2.0.0",
+    "happy-dom": "^15.0.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "react-router-dom": "^6.2.0",
+    "typescript": "^5.5.0",
+    "@types/node": "^20.0.0"
+  },
+  "dependencies": {
+    "aria-query": "^5.3.0"
+  }
+}

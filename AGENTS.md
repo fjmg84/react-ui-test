@@ -1,0 +1,3 @@
+- All documentation, code, and comments are written in English.
+- No changes are pushed directly to the main/dev branch.
+- No commits are made without the developer's approval.
