@@ -6,7 +6,7 @@ The items are resolved in order. Each includes current state, problem, change, a
 
 ---
 
-## 1. Packaging: RTL + vitest as peerDependencies
+## 1. Packaging: RTL + vitest as peerDependencies ✅
 
 ### Problem
 `dependencies` only has `aria-query`. `@testing-library/react`, `@testing-library/dom` and `vitest` are in `devDependencies`, and `vitest` is not declared in `peerDependencies` even though `src/vitest-integration.ts` imports from `vitest`.
